@@ -1,0 +1,15 @@
+::ng-deep .modal-backdrop.fade.in{ z-index: 999 !important; }
+::ng-deep .modal { z-index: 1000 !important; }
+
+:host ::ng-deep .tableContent {
+    position: relative;
+    font-size: 15px;
+    height: calc(100vh - 220px);
+  }
+  
+  :host ::ng-deep .tableContentHalf {
+    position: relative;
+    font-size: 15px;
+    height: calc(75vh - 220px);
+  }
+  

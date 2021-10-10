@@ -1,0 +1,73 @@
+<div class="card">
+	<div class="card-header  text-white b-color row ">
+		<h5 class="card-title col-md-11 m-0 py-1">GRUPOS</h5>
+		<div class="col-md-1 m-0 p-0">
+			<a class="cursor-icon circle-ico bg-white" (click)="goHome()">
+				<em class="fa fa-home fa-2x" aria-hidden="true"></em>
+			</a>
+		</div>
+	</div>
+	<div class="card-body">
+		<div class="m-2">
+			<button type="button" class="btn btn-primary btn-sm" (click)="createConf()">
+				<em class="fa fa-plus"></em> Crear configuración
+			</button>
+		</div>
+		<div class="card m-2">
+			<div class="card-header">
+				<h6>{{groupName ? groupName : 'Tablero principal'}}</h6>
+			</div>
+			<div class="card-body">
+				<div class="row mb-1">
+					<div class="col-md-10">
+						<button *ngIf="groupName" type="button" class="btn btn-outline-secondary btn-sm"
+							(click)="back()">
+							<em class="fa fa-arrow-left"></em> Atras
+						</button>
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-outline-success btn-sm" (click)="consumption()">
+							<em class="fa fa-tachometer"></em> Medidor de consumo
+							<i class="fas fa-tachometer-alt"></i>
+						</button>
+					</div>
+				</div>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th class="text-center" *ngFor="let head of groupHead" scope="col">{{head}} </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="text-center" *ngFor="let group of groupList">
+							<td>{{group.rowIndex}}</td>
+							<td>{{group.name}}</td>
+							<td>{{group.typecode===1 ? 'Foco' : 'Grupo'}}</td>
+							<td [style]="{color: group.status?'green':'red'}">
+								<em [title]="group.status?'ACTIVO':'INACTIVO'"
+									[ngClass]="group.status?'fa fa-check-circle-o fa-2x':'fa fa-times-circle-o fa-2x'"></em>
+							</td>
+							<td>
+								<div *ngIf="group.typecode===1 ">
+									<p-inputSwitch *ngIf="group.connect && group.status" [(ngModel)]="group.onoff"
+										(onChange)="sOnOff(group)">
+									</p-inputSwitch>
+									<span *ngIf="!group.connect || !group.status">DESCONECTADO</span>
+								</div>
+								<button *ngIf="group.typecode===2" type="button" class="btn btn-danger btn-sm mx-1"
+									(click)="insertGroup(group)">Ingresar</button>
+							</td>
+							<td>
+								<div class="d-flex justify-content-around">
+									<a class="cursor-icon" title="Editar" (click)="editConf(group)">
+										<em class="fa fa-edit  fa-2x" aria-hidden="true"></em>
+									</a> 
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

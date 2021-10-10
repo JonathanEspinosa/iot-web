@@ -1,0 +1,55 @@
+<div class="card">
+    <div class="card-header  text-white b-color row ">
+        <h5 class="card-title col-md-11 m-0 py-1">USUARIOS</h5>
+        <div class="col-md-1 m-0 p-0">
+            <a class="cursor-icon circle-ico bg-white" (click)="goHome()">
+                <em class="fa fa-home fa-2x" aria-hidden="true"></em>
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="m-2">
+            <button type="button" class="btn btn-primary btn-sm" (click)="createUser()">
+                <em class="fa fa-plus"></em> Crear usuario
+            </button>
+        </div>
+        <div class="card m-2">
+            <div class="card-header">
+                <h6>Lista de usuarios</h6>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-center" *ngFor="let head of userHead" scope="col">{{head}} </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center" *ngFor="let user of userList">
+                            <td>{{user.rowIndex}}</td>
+                            <td>{{user.username}}</td>
+                            <td>{{user.name}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.phone}}</td>
+                            <td [style]="{color: user.status?'green':'red'}">
+                                <em [title]="user.status?'ACTIVO':'INACTIVO'"
+                                    [ngClass]="user.status?'fa fa-check-circle-o fa-2x':'fa fa-times-circle-o fa-2x'"></em>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm mx-1"
+                                    (click)="configureUser(user)">Configurar</button>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-around">
+                                    <a class="cursor-icon" title="Editar" (click)="editUser(user)">
+                                        <em class="fa fa-edit  fa-2x" aria-hidden="true"></em>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <h4 class="modal-title"> Configurar usuario </h4>
+    <span class="fa fa-times close" (click)="onCancel()"></span>
+</div>
+<div class="modal-body">
+    <div class="row px-1">
+        <label class="col-md-3 m-0 py-2">Nick:</label>
+        <input class="col-md-9 m-0 py-2" [(ngModel)]="userRow.username" [disabled]="true" type="text" maxlength="20" />
+
+        <label class="col-md-12 m-0 py-2">Asignar roles:</label>
+        <div class="col-md-12 m-0 py-2">
+            <p-table [value]="rolList" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+                [(selection)]="rolSelectList">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col" class="text-center" style="width: 10%;">
+                            <p-tableHeaderCheckbox (click)="onCheckAll(e.checked)" #e>
+                            </p-tableHeaderCheckbox>
+                        </th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripción</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rol>
+                    <tr>
+                        <td class="text-center">
+                            <p-tableCheckbox [value]="rol"></p-tableCheckbox>
+                        </td>
+                        <td [title]="rol.name">{{rol.name}}</td>
+                        <td [title]="rol.description">{{rol.description}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger btn-sm" (click)="onCancel()">
+        <span>
+            <em class="fa fa-close smx-button-text smx-button-icon-right"></em> Cancelar
+        </span>
+    </button>
+    <button type="button" class="btn btn-success btn-sm " (click)="onConfirm(userRow)">
+        <span>
+            <em class="fa fa-save smx-button-text smx-button-icon-right"></em> Aceptar
+        </span>
+    </button>
+</div>

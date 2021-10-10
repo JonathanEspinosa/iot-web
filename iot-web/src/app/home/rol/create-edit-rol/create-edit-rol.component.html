@@ -1,0 +1,61 @@
+<div class="modal-header">
+    <h4 class="modal-title"> {{isEdit ? 'Editar rol' : 'Crear rol'}} </h4>
+    <span class="fa fa-times close" (click)="onCancel()"></span>
+</div>
+<div class="modal-body">
+    <div class="row px-1">
+        <label class="col-md-3 m-0 py-2">Nombre:</label>
+        <input class="col-md-9 m-0 py-2" [(ngModel)]="rolRow.name" type="text" maxlength="50" />
+        <label class="col-md-3 m-0 py-2">Descripción:</label>
+        <textarea class="col-md-9 m-0 py-2" [(ngModel)]="rolRow.description" maxlength="100" rows="2"
+            cols="50"></textarea>
+        <label *ngIf="isEdit" class="col-md-3 m-0 py-2">Estado:</label>
+        <div *ngIf="isEdit" class="col-md-9 m-0 py-2 d-flex flex-row">
+            <div *ngFor="let optionActive of iotUtil.statesLower">
+                <div class="radio" [style]="{width: '110px'}">
+                    <p-radioButton name="active" error-label="Estado" [(ngModel)]="rolRow.status"
+                        id="radio-{{optionActive.label}}" label="{{optionActive.label}}" [value]="optionActive.value">
+                    </p-radioButton>
+                </div>
+            </div>
+        </div>
+        <label class="col-md-12 m-0 py-2">Asignar focos:</label>
+
+        <div class="col-md-12 m-0 py-2">
+            <p-table [value]="deviceList" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+                [(selection)]="deviceSelectList">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col" class="text-center" style="width: 10%;">
+                            <p-tableHeaderCheckbox (click)="onCheckAll(e.checked)" #e>
+                            </p-tableHeaderCheckbox>
+                        </th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Grupo</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-device>
+                    <tr>
+                        <td class="text-center">
+                            <p-tableCheckbox [value]="device"></p-tableCheckbox>
+                        </td>
+                        <td [title]="device.name">{{device.name}}</td>
+                        <td [title]="device.groupname">{{device.groupname}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger btn-sm" (click)="onCancel()">
+        <span>
+            <em class="fa fa-close smx-button-text smx-button-icon-right"></em> Cancelar
+        </span>
+    </button>
+    <button type="button" class="btn btn-success btn-sm " (click)="onConfirm(rolRow)">
+        <span>
+            <em class="fa fa-save smx-button-text smx-button-icon-right"></em> Aceptar
+        </span>
+    </button>
+</div>

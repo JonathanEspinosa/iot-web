@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h4 class="modal-title"> {{isEdit ? 'Editar configuración' : 'Crear configuración'}} </h4>
+    <span class="fa fa-times close" (click)="onCancel()"></span>
+</div>
+<div class="modal-body">
+    <div class="row px-1">
+        <label class="col-md-3 m-0 py-2">Tipo:</label>
+        <p-dropdown class="col-md-9 m-0 px-0 py-2 " [options]="typeList" [(ngModel)]="selectedType"
+            placeholder="Selecccione" optionLabel="name" [style]="{'width':'100%'}" [disabled]="typeDisable">
+        </p-dropdown>
+        <label class="col-md-3 m-0 py-2">Nombre:</label>
+        <input class="col-md-9 m-0 py-2" [(ngModel)]="groupRow.name" type="text" maxlength="30" />
+        <label *ngIf="isEdit" class="col-md-3 m-0 py-2">Estado:</label>
+        <div *ngIf="isEdit" class="col-md-9 m-0 py-2 d-flex flex-row">
+            <div *ngFor="let optionActive of iotUtil.statesLower">
+                <div class="radio" [style]="{width: '110px'}">
+                    <p-radioButton name="active" error-label="Estado" [(ngModel)]="groupRow.status"
+                        id="radio-{{optionActive.label}}" label="{{optionActive.label}}" [value]="optionActive.value">
+                    </p-radioButton>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger btn-sm" (click)="onCancel()">
+        <span>
+            <em class="fa fa-close smx-button-text smx-button-icon-right"></em> Cancelar
+        </span>
+    </button>
+    <button type="button" class="btn btn-success btn-sm " (click)="onConfirm(groupRow)">
+        <span>
+            <em class="fa fa-save smx-button-text smx-button-icon-right"></em> Aceptar
+        </span>
+    </button>
+</div>

@@ -1,0 +1,49 @@
+<div class="card">
+    <div class="card-header  text-white b-color row ">
+        <h5 class="card-title col-md-11 m-0 py-1">ROLES</h5>
+        <div class="col-md-1 m-0 p-0">
+            <a class="cursor-icon circle-ico bg-white" (click)="goHome()">
+                <em class="fa fa-home fa-2x" aria-hidden="true"></em>
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="m-2">
+            <button type="button" class="btn btn-primary btn-sm" (click)="createRol()">
+                <em class="fa fa-plus"></em> Crear rol
+            </button>
+        </div>
+        <div class="card m-2">
+            <div class="card-header">
+                <h6>Lista de roles</h6>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-center" *ngFor="let head of rolHead" scope="col">{{head}} </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center" *ngFor="let rol of rolList">
+                            <td>{{rol.rowIndex}}</td>
+                            <td>{{rol.name}}</td>
+                            <td>{{rol.description}}</td>
+                            <td [style]="{color: rol.status?'green':'red'}">
+                                <em [title]="rol.status?'ACTIVO':'INACTIVO'"
+                                    [ngClass]="rol.status?'fa fa-check-circle-o fa-2x':'fa fa-times-circle-o fa-2x'"></em>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-around">
+                                    <a class="cursor-icon" title="Editar" (click)="editRol(rol)">
+                                        <em class="fa fa-edit  fa-2x" aria-hidden="true"></em>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
