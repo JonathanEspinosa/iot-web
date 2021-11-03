@@ -97,4 +97,15 @@ export class RootService {
     const path = `${baseUrl}/type/`;
     return this.http.get(path);
   }
+
+  /** SERVICIOS DE CONSUMO ENERGETICO **/
+  getRangeDateByGroup(groupcode: number): Observable<any> {
+    const path = `${baseUrl}/energyconsuption/rangeDateByGroup/${groupcode ? groupcode : 0}`;
+    return this.http.get(path);
+  }
+  checkEnergyConsumption(obj: any): Observable<any> {
+    const path = `${baseUrl}/energyconsuption/checkEnergyConsumption`;
+    return this.http.post(path, obj);
+  }
+
 }

@@ -1,7 +1,7 @@
 <div class="card">
 	<div class="card-header  text-white b-color row ">
-		<h5 class="card-title col-md-11 m-0 py-1">GRUPOS</h5>
-		<div class="col-md-1 m-0 p-0">
+		<h5 class="card-title col-sm-11 m-0 py-1">GRUPOS</h5>
+		<div class="col-sm-1 m-0 p-0">
 			<a class="cursor-icon circle-ico bg-white" (click)="goHome()">
 				<em class="fa fa-home fa-2x" aria-hidden="true"></em>
 			</a>
@@ -19,14 +19,15 @@
 			</div>
 			<div class="card-body">
 				<div class="row mb-1">
-					<div class="col-md-10">
+					<div class="col-sm-8 col-md-10">
 						<button *ngIf="groupName" type="button" class="btn btn-outline-secondary btn-sm"
 							(click)="back()">
 							<em class="fa fa-arrow-left"></em> Atras
 						</button>
 					</div>
-					<div class="col-md-2">
-						<button type="button" class="btn btn-outline-success btn-sm" (click)="consumption()">
+					<div class="col-sm-4 col-md-2">
+						<button *ngIf="powDevice" type="button" class="btn btn-outline-success btn-sm"
+							(click)="consumption()">
 							<em class="fa fa-tachometer"></em> Medidor de consumo
 							<i class="fas fa-tachometer-alt"></i>
 						</button>
@@ -61,7 +62,7 @@
 								<div class="d-flex justify-content-around">
 									<a class="cursor-icon" title="Editar" (click)="editConf(group)">
 										<em class="fa fa-edit  fa-2x" aria-hidden="true"></em>
-									</a> 
+									</a>
 								</div>
 							</td>
 						</tr>

@@ -20,6 +20,7 @@ export class CreateEditConfigurationComponent implements OnInit {
   isEdit: boolean | undefined;
   typeDisable: boolean = false;
   groupRow: GroupTable = new GroupTable();
+  havePow: boolean | undefined;
   constructor(
     private _bsModalRef: BsModalRef,
     private rootService: RootService,
@@ -28,9 +29,13 @@ export class CreateEditConfigurationComponent implements OnInit {
 
   ngOnInit(): void {
     this.rootService.getType().subscribe((res: any[]) => {
-      this.typeList = this.groupRow?.fathercode
-        ? res
-        : res.filter(x => Number(x.typecode) === 2);
+      if (this.groupRow?.fathercode) {
+        this.typeList = this.havePow
+          ? res.filter(t => Number(t.typecode) !== 3)
+          : res;
+      } else {
+        this.typeList = res.filter(x => Number(x.typecode) === 2);
+      }
 
       if (this.groupRow?.typecode) {
         this.selectedType = this.typeList.find(t => Number(t.typecode) === Number(this.groupRow?.typecode));
@@ -119,15 +124,10 @@ export class CreateEditConfigurationComponent implements OnInit {
   public onConfirm(groupRow: GroupTable): void {
     let promise: Promise<any> | undefined;
     if (this.validateFields()) {
-      switch (this.selectedType?.typecode) {
-        case 1:
-          promise = this.saveUpdateDevice(groupRow);
-          break;
-        case 2:
-          promise = this.saveUpdateGroup(groupRow);
-          break;
-        case 3:
-          break;
+      if (this.selectedType?.typecode === 2) {
+        promise = this.saveUpdateGroup(groupRow);
+      } else {
+        promise = this.saveUpdateDevice(groupRow);
       }
       promise?.then((res) => {
         if (res) {

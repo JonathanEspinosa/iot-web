@@ -25,6 +25,8 @@ import { CreateEditRolComponent } from './home/rol/create-edit-rol/create-edit-r
 import { TableModule } from 'primeng/table';
 import { NumberDirective } from './directive/number.directive';
 import { ConfigureUserComponent } from './home/user/configure-user/configure-user.component';
+import { ConsumptionMeterComponent } from './home/group/consumption-meter/consumption-meter.component';
+import {CalendarModule} from 'primeng/calendar';
 
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: env.mqtt.server,
@@ -43,7 +45,8 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     CreateEditUserComponent,
     CreateEditRolComponent,
     ConfigureUserComponent,
-    NumberDirective
+    NumberDirective,
+    ConsumptionMeterComponent
   ],
   imports: [
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
@@ -51,6 +54,7 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     HttpClientModule,
     RadioButtonModule,
     DropdownModule,
+    CalendarModule,
     InputSwitchModule,
     AppRoutingModule,
     TooltipModule.forRoot(),

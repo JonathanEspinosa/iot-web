@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <h4 class="modal-title"> Medidor de consumo </h4>
+    <span class="fa fa-times close" (click)="onCancel()"></span>
+</div>
+<div class="modal-body">
+    <div class="row px-1 py-2 card-header">
+        <label class="col-sm-3 m-0 py-2">Nombre:</label>
+        <input class="col-sm-9 m-0 py-2" [(ngModel)]="groupRow.name" type="text" maxlength="30" />
+    </div>
+    <div *ngIf="groupRow.connect" class="row px-1 py-2 text-center">
+        <label class="col-sm-4 m-0 py-1">Potencia</label>
+        <label class="col-sm-4 m-0 py-1">Intensidad</label>
+        <label class="col-sm-4 m-0 py-1">Voltaje</label>
+        <label class="col-sm-4 m-0 py-1">{{power}}W</label>
+        <label class="col-sm-4 m-0 py-1">{{intensity}}A</label>
+        <label class="col-sm-4 m-0 py-1">{{voltage}}V</label>
+    </div>
+    <div *ngIf="!groupRow.connect" class="row px-1 py-2 d-flex justify-content-around">
+        DESCONECTADO
+    </div>
+    <label *ngIf="!existDates">NO EXISTEN REGISTROS PARA CONSULTAR</label>
+    <div *ngIf="groupRow.connect && existDates" class="row px-1 py-2">
+        <label class="col-sm-12" for="range">Inserte rango de fechas:</label>
+        <div class="col-sm-8">
+            <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" inputId="range"
+                [showButtonBar]="true" [minDate]="minDateValue" [maxDate]="maxDateValue">
+            </p-calendar>
+        </div>
+        <div class="col-sm-4">
+            <button type="button" class="btn btn-success btn-sm" (click)="consult()">
+                <span>
+                    <em class="fa fa-check smx-button-text smx-button-icon-right"></em> Consultar
+                </span>
+            </button>
+        </div>
+        <h1 class="col-sm-12 mt-2 font-weight-bold text-center">
+            {{energy}} kWh
+        </h1>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger btn-sm" (click)="onCancel()">
+        <span>
+            <em class="fa fa-close smx-button-text smx-button-icon-right"></em> Cancelar
+        </span>
+    </button>
+    <button type="button" class="btn btn-success btn-sm " (click)="onConfirm(groupRow)">
+        <span>
+            <em class="fa fa-save smx-button-text smx-button-icon-right"></em> Aceptar
+        </span>
+    </button>
+</div>

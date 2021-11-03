@@ -8,6 +8,7 @@ import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Router } from '@angular/router';
 import { RootService } from '../../services/root.service';
 import { Subscription } from 'rxjs';
+import { ConsumptionMeterComponent } from './consumption-meter/consumption-meter.component';
 
 @Component({
   selector: 'app-group',
@@ -22,6 +23,8 @@ export class GroupComponent implements OnInit {
   groupName: string | undefined;
   checked = true;
   arrayUtil: ArrayFunctionsUtil = new ArrayFunctionsUtil();
+
+  powDevice: GroupTable | undefined;
 
   /* MQTT PARAMETROS */
   subscribeList: Subscription[] = [];
@@ -48,6 +51,7 @@ export class GroupComponent implements OnInit {
 
   chargeGroupTableByFather(fathercode: number | undefined) {
     this.groupList = [];
+    this.powDevice = undefined;
     this.service.groupFilterTableByFather(fathercode)
       .subscribe((res) => {
         let orderGroup: GroupTable[] = res.sort(this.arrayUtil.sortBy('name'));
@@ -66,8 +70,9 @@ export class GroupComponent implements OnInit {
                   d.connect = false;
                   this.initObserveList(d.topic);
                 });
+                this.powDevice = orderGroup.find(p => p.typecode === 3);
               }
-              this.groupList = this.iotUtil.getIncrementalDataKey(orderGroup);
+              this.groupList = this.iotUtil.getIncrementalDataKey(orderGroup.filter(g => g.typecode !== 3));
               this.refreshObserveList();
             });
         } else {
@@ -163,7 +168,7 @@ export class GroupComponent implements OnInit {
       keyboard: false,
       backdrop: 'static',
       class: 'modal-dialog-centered modal-md',
-      initialState: { isEdit: false, groupRow: groupRow }
+      initialState: { isEdit: false, groupRow: groupRow, havePow: this.powDevice ? true : false }
     });
     if ((modal.content)) {
       (modal.content).onClose.subscribe((res: any) => {
@@ -197,6 +202,38 @@ export class GroupComponent implements OnInit {
     }
   }
 
-  consumption() { }
+  consumption() {
+    const sendObj = new GroupTable();
+    sendObj.fathercode = this.fathercode;
+    sendObj.groupcode = this.powDevice?.groupcode;
+    sendObj.devicecode = this.powDevice?.devicecode;
+    sendObj.name = this.powDevice?.name;
+    sendObj.typecode = this.powDevice?.typecode;
+    sendObj.status = this.powDevice?.status;
+    this.service.getRangeDateByGroup(sendObj.fathercode || 0).subscribe(res => {
+
+      const minDate = res.minDate;
+      const maxDate = res.maxDate;
+
+      const modal = this.modalService.show(ConsumptionMeterComponent, {
+        keyboard: false,
+        backdrop: 'static',
+        class: 'modal-dialog-centered modal-md',
+        initialState: {
+          groupRow: sendObj,
+          existDates: minDate && maxDate,
+          minDateValue: new Date(minDate),
+          maxDateValue: new Date(maxDate)
+        }
+      });
+      if ((modal.content)) {
+        (modal.content).onClose.subscribe((res: any) => {
+          if (res) {
+            this.chargeGroupTableByFather(this.fathercode);
+          }
+        });
+      }
+    });
+  }
 
 }
