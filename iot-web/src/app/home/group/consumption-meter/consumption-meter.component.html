@@ -23,7 +23,8 @@
         <label class="col-sm-12" for="range">Inserte rango de fechas:</label>
         <div class="col-sm-8">
             <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" inputId="range"
-                [showButtonBar]="true" [minDate]="minDateValue" [maxDate]="maxDateValue">
+                [showButtonBar]="true" todayButtonStyleClass="invisible" [minDate]="minDateValue"
+                [maxDate]="maxDateValue">
             </p-calendar>
         </div>
         <div class="col-sm-4">
