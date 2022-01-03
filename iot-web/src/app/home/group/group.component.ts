@@ -31,7 +31,8 @@ export class GroupComponent implements OnInit {
   topicObs1: string = "stat/";
   topicObs2: string = "/RESULT";
   topicAcc1: string = "cmnd/";
-  topicAcc2: string = "/POWER";
+  topicAcc2_1: string = "/POWER1";
+  topicAcc2_2: string = "/POWER2";
 
   constructor(
     private modalService: BsModalService,
@@ -65,7 +66,7 @@ export class GroupComponent implements OnInit {
                 /* Se juntan los grupos con los dispositivos para crear la tabla de grupos actual */
                 orderGroup = orderGroup.concat(devices.sort(this.arrayUtil.sortBy('name')));
                 /* Se crean observadores para tener escucha de los dispositivos en vivo */
-                orderGroup.filter(t => t.typecode === 1).forEach(d => {
+                orderGroup.filter(t => t.typecode === 1 || t.typecode === 4).forEach(d => {
                   d.topic = this.topicObs1 + d.name + this.topicObs2;
                   d.connect = false;
                   this.initObserveList(d.topic);
@@ -83,11 +84,17 @@ export class GroupComponent implements OnInit {
 
   refreshObserveList() {
     if (this.groupList) {
-      this.groupList.filter(r => r.typecode === 1).forEach(groupRow => {
+      this.groupList.filter(r => r.typecode === 1 || r.typecode === 4).forEach(groupRow => {
         const topic: string = this.topicAcc1
           .concat(groupRow.name ? groupRow.name : "")
-          .concat(this.topicAcc2);
+          .concat(this.topicAcc2_1);
         this._mqttService.unsafePublish(topic, '', { qos: 1, retain: true });
+        if (groupRow.typecode === 4) {
+          const topic: string = this.topicAcc1
+            .concat(groupRow.name ? groupRow.name : "")
+            .concat(this.topicAcc2_2);
+          this._mqttService.unsafePublish(topic, '', { qos: 1, retain: true });
+        }
       });
     }
   }
@@ -97,14 +104,28 @@ export class GroupComponent implements OnInit {
       .subscribe((message: IMqttMessage) => {
         try {
           const sonoff = JSON.parse(message.payload.toString());
-          const row = this.groupList.find(r => r.topic === topic && r.typecode === 1);
-          if (row) {
-            row.auxiliarConnect = true;
-            row.connect = true;
-            if (sonoff.POWER === 'ON') {
-              row.onoff = true;
-            } else {
-              row.onoff = false;
+          const row = this.groupList.find(r => r.topic === topic && (r.typecode === 1 || r.typecode === 4));
+          if (sonoff?.Command && sonoff?.Command === 'Error') {
+            alert('El dispositivo "' + row?.name + '" presenta inconvenientes, comuniquese con el administrador.');
+          } else {
+            if (row) {
+              row.auxiliarConnect = true;
+              row.connect = true;
+
+              if (sonoff?.POWER || sonoff?.POWER1) {
+                if (sonoff.POWER === 'ON' || sonoff.POWER1 === 'ON') {
+                  row.onoff = true;
+                } else {
+                  row.onoff = false;
+                }
+              } else if (sonoff?.POWER2) {
+                if (sonoff.POWER2 === 'ON') {
+                  row.onoff2 = true;
+                } else {
+                  row.onoff2 = false;
+                }
+              }
+
             }
           }
         } catch (Ex) {
@@ -123,10 +144,13 @@ export class GroupComponent implements OnInit {
 
 
 
-  sOnOff(groupRow: GroupTable) {
-    const topic: string = this.topicAcc1.concat(groupRow.name ? groupRow.name : "").concat(this.topicAcc2);
+  sOnOff(groupRow: GroupTable, releNum: number) {
+    const topic: string = this.topicAcc1
+      .concat(groupRow.name ? groupRow.name : "")
+      .concat(releNum === 1 ? this.topicAcc2_1 : this.topicAcc2_2);
     groupRow.auxiliarConnect = false;
-    this._mqttService.publish(topic, groupRow.onoff ? 'ON' : 'OFF', { qos: 1, retain: false })
+    const onOff = releNum === 1 ? groupRow.onoff : groupRow.onoff2;
+    this._mqttService.publish(topic, onOff ? 'ON' : 'OFF', { qos: 1, retain: false })
       .subscribe(() => {
         this.iotUtil.delay(500).then(() => {
           if (groupRow.auxiliarConnect === false) {

@@ -8,6 +8,7 @@ export class GroupTable {
     topic: string | undefined;
     typecode: number | undefined;
     onoff: boolean | undefined;
+    onoff2: boolean | undefined;
     connect: boolean | undefined;
     auxiliarConnect: boolean | undefined;
     status: boolean | undefined;

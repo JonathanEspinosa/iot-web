@@ -43,15 +43,19 @@
 						<tr class="text-center" *ngFor="let group of groupList">
 							<td>{{group.rowIndex}}</td>
 							<td>{{group.name}}</td>
-							<td>{{group.typecode===1 ? 'Foco' : 'Grupo'}}</td>
+							<td>{{group.typecode===1 ? 'Foco simple' : group.typecode===4 ? 'Foco doble' : 'Grupo'}}
+							</td>
 							<td [style]="{color: group.status?'green':'red'}">
 								<em [title]="group.status?'ACTIVO':'INACTIVO'"
 									[ngClass]="group.status?'fa fa-check-circle-o fa-2x':'fa fa-times-circle-o fa-2x'"></em>
 							</td>
 							<td>
-								<div *ngIf="group.typecode===1 ">
+								<div *ngIf="group.typecode === 1 || group.typecode === 4">
 									<p-inputSwitch *ngIf="group.connect && group.status" [(ngModel)]="group.onoff"
-										(onChange)="sOnOff(group)">
+										(onChange)="sOnOff(group,1)" class="mx-2">
+									</p-inputSwitch>
+									<p-inputSwitch *ngIf="group.connect && group.status && group.typecode === 4"
+										[(ngModel)]="group.onoff2" (onChange)="sOnOff(group,2)" class="mx-2">
 									</p-inputSwitch>
 									<span *ngIf="!group.connect || !group.status">DESCONECTADO</span>
 								</div>
