@@ -7,28 +7,92 @@
 @import "~ngx-bootstrap/datepicker/bs-datepicker.css";
 @import "~primeng/resources/primeng.min.css";
 @import "~primeicons/primeicons.css";
-@import"~primeng/resources/themes/nova/theme.css";
+@import "~primeng/resources/themes/nova/theme.css";
 
 .cursor-icon {
-    cursor: pointer;
-    /* transform: scale(1.5); */
-  }
+  cursor: pointer;
+  /* transform: scale(1.5); */
+}
 
-.b-color{
+.b-color {
   background-color: rgb(22, 150, 202) !important;
 }
 
-.p-color{
+.p-color {
   color: #007ad9 !important;
 }
 
-.circle-ico{
+.circle-ico {
   display: inline-block;
   border-radius: 60px;
   box-shadow: 0px 0px 2px #888;
   padding: 0.1em 0.2em;
 }
 
-.full-display{
+.full-display {
   height: calc(100vh - 80px);
+}
+
+/* ESTILOS HEADER*/
+.header {
+  background-color: #9fe4b7 !important;
+  display: flex;
+  align-items: center;
+}
+.modal-header {
+  background-color: #00713D !important;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+.logo {
+  top: 0;
+  margin-right: 1rem;
+  overflow: hidden;
+  background-color: #fff;
+}
+.logo img {
+  display: block;
+  height: 2.5rem;
+  transition: all 0.2s;
+}
+.logo:hover img {
+  opacity: 0.8;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+/*Fondo*/
+.espe-logo{
+  display: flex;
+  justify-content: center;
+  border: none !important;
+  background-color: transparent;
+}
+.espe-background {
+  background-image: url("assets/img/Espe-Sangolgui.jpg");
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; 
+}
+ 
+/*MENU PRINCIPAL*/
+.div-option{
+  margin: 2rem;
+  background-color: #f3f3f3a4;
+  display: flex;
+  flex-direction: column;
+  padding-inline: 1rem;
+  padding-block: 1rem;
+
+}
+.div-option img{
+  width: 10rem;
+  height: 10rem;
+  padding-bottom: 0.5rem;
 }

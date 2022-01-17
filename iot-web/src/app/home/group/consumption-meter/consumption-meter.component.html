@@ -20,11 +20,11 @@
     </div>
     <label *ngIf="!existDates">NO EXISTEN REGISTROS PARA CONSULTAR</label>
     <div *ngIf="groupRow.connect && existDates" class="row px-1 py-2">
-        <label class="col-sm-12" for="range">Inserte rango de fechas:</label>
+        <label class="col-sm-12">Inserte rango de fechas:</label>
         <div class="col-sm-8">
-            <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" inputId="range"
-                [showButtonBar]="true" todayButtonStyleClass="invisible" [minDate]="minDateValue"
-                [maxDate]="maxDateValue">
+            <p-calendar #calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true"
+                [showButtonBar]="true" todayButtonStyleClass="invisible" [showIcon]="true" (onSelect)="onSelect()"
+                [minDate]="minDateValue" [maxDate]="maxDateValue">
             </p-calendar>
         </div>
         <div class="col-sm-4">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subject, Subscriber, Subscription, interval } from 'rxjs';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { type } from '../../../model/type.model';
@@ -8,12 +8,14 @@ import { GroupTable } from '../../../model/groupTable.model';
 import { IotUtil } from 'src/app/util/iot.util';
 import { RootService } from '../../../services/root.service';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
+import { Calendar } from 'primeng/calendar';
 
 @Component({
   selector: 'app-consumption-meter',
   templateUrl: './consumption-meter.component.html',
 })
 export class ConsumptionMeterComponent implements OnInit {
+  @ViewChild("calendar") calendar: Calendar | undefined;
 
   public onClose: Subject<any> = new Subject();
   energy: number = 0;
@@ -40,6 +42,12 @@ export class ConsumptionMeterComponent implements OnInit {
       this.initLoop("cmnd/" + this.groupRow?.name + "/Status");
     }
 
+  }
+
+  onSelect() {
+    if (this.calendar && this.rangeDates && this.rangeDates[1]) { // If second date is selected
+      this.calendar.hideOverlay();
+    }
   }
 
   publish(topic: string) {
