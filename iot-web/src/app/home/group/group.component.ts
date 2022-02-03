@@ -242,7 +242,7 @@ export class GroupComponent implements OnInit {
       const modal = this.modalService.show(ConsumptionMeterComponent, {
         keyboard: false,
         backdrop: 'static',
-        class: 'modal-dialog-centered modal-md',
+        class: 'modal-dialog-centered modal-lg',
         initialState: {
           groupRow: sendObj,
           existDates: minDate && maxDate,

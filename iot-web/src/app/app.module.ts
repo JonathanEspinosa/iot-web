@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -26,7 +26,9 @@ import { TableModule } from 'primeng/table';
 import { NumberDirective } from './directive/number.directive';
 import { ConfigureUserComponent } from './home/user/configure-user/configure-user.component';
 import { ConsumptionMeterComponent } from './home/group/consumption-meter/consumption-meter.component';
-import {CalendarModule} from 'primeng/calendar';
+import { CalendarModule } from 'primeng/calendar';
+import { GraphicComponent } from './home/group/consumption-meter/graphic/graphic.component';
+import { NgChartsModule } from 'ng2-charts';
 
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: env.mqtt.server,
@@ -46,13 +48,15 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     CreateEditRolComponent,
     ConfigureUserComponent,
     NumberDirective,
-    ConsumptionMeterComponent
+    ConsumptionMeterComponent,
+    GraphicComponent
   ],
   imports: [
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     BrowserModule,
     HttpClientModule,
     RadioButtonModule,
+    NgChartsModule,
     DropdownModule,
     CalendarModule,
     InputSwitchModule,
@@ -63,6 +67,8 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     TableModule,
   ],
   providers: [RootService, BsModalService, EventMqttService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [NO_ERRORS_SCHEMA]
+
 })
 export class AppModule { }

@@ -9,6 +9,8 @@ import { IotUtil } from 'src/app/util/iot.util';
 import { RootService } from '../../../services/root.service';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Calendar } from 'primeng/calendar';
+import { GraphicComponent } from './graphic/graphic.component';
+import { EnergyConsuption } from 'src/app/model/energyConsuption.model';
 
 @Component({
   selector: 'app-consumption-meter',
@@ -16,6 +18,7 @@ import { Calendar } from 'primeng/calendar';
 })
 export class ConsumptionMeterComponent implements OnInit {
   @ViewChild("calendar") calendar: Calendar | undefined;
+  @ViewChild(GraphicComponent) graphicComponent?: GraphicComponent;
 
   public onClose: Subject<any> = new Subject();
   energy: number = 0;
@@ -43,6 +46,7 @@ export class ConsumptionMeterComponent implements OnInit {
     }
 
   }
+
 
   onSelect() {
     if (this.calendar && this.rangeDates && this.rangeDates[1]) { // If second date is selected
@@ -105,8 +109,9 @@ export class ConsumptionMeterComponent implements OnInit {
         "minDate": this.rangeDates[0].toISOString().replace("Z", ""),
         "maxDate": this.rangeDates[1].toISOString().replace("Z", "")
       })
-        .subscribe(res => {
-          this.energy = res.energy
+        .subscribe((res: EnergyConsuption[]) => {
+          this.updateGraphic(res);
+          this.energy = Number(res.reduce((acc, r) => acc + Number(r.energyday), 0)?.toFixed(2));
         });
     }
   }
@@ -153,4 +158,39 @@ export class ConsumptionMeterComponent implements OnInit {
     this.subscribeList = [];
   }
 
+  updateGraphic(registers: any[]) {
+    if (this.graphicComponent) {
+      this.setDimension(this.graphicComponent, registers);
+      this.graphicComponent.lineChartData.datasets[0].label = this.groupRow.name;
+      this.graphicComponent.lineChartData.datasets[0].data
+        = registers.reduce((acc: any[], r) => acc.concat(r.energyday?.toFixed(2)), []);
+      this.graphicComponent.lineChartData.labels
+        = registers.reduce((acc: any[], r) => acc.concat(r.date), []);
+      this.graphicComponent.chart?.update();
+    }
+  }
+
+  setDimension(graphicComponent: GraphicComponent, registers: EnergyConsuption[]) {
+    graphicComponent.rowArray = [];
+    graphicComponent.colArray = [];
+    let registerNumber = 0;
+    let isLastAdd = false;
+    registers.forEach((r, index) => {
+      r.energyday = Number(r.energyday?.toFixed(2));
+      graphicComponent.colArray.push(r);
+      if (registerNumber + 1 === 6) {
+        graphicComponent.rowArray.push(graphicComponent.colArray);
+        registerNumber = 0;
+        graphicComponent.colArray = [];
+        if (index + 1 === registers.length) {
+          isLastAdd = true;
+        }
+      } else {
+        registerNumber++;
+      }
+      if (index + 1 === registers.length && !isLastAdd) {
+        graphicComponent.rowArray.push(graphicComponent.colArray);
+      }
+    });
+  }
 }

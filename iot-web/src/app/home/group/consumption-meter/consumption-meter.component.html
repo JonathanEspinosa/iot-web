@@ -19,7 +19,7 @@
         DESCONECTADO
     </div>
     <label *ngIf="!existDates">NO EXISTEN REGISTROS PARA CONSULTAR</label>
-    <div *ngIf="groupRow.connect && existDates" class="row px-1 py-2">
+    <div *ngIf="groupRow.connect && existDates" class="row px-5 py-2">
         <label class="col-sm-12">Inserte rango de fechas:</label>
         <div class="col-sm-8">
             <p-calendar #calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true"
@@ -37,6 +37,9 @@
         <h1 class="col-sm-12 mt-2 font-weight-bold text-center">
             {{energy}} kWh
         </h1>
+        <div class="col-sm-12">
+            <app-graphic> </app-graphic>
+        </div>
     </div>
 </div>
 <div class="modal-footer">
