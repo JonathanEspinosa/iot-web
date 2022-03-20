@@ -44,7 +44,6 @@ export class ConsumptionMeterComponent implements OnInit {
       this.initObserve("stat/" + this.groupRow?.name + "/STATUS8");
       this.initLoop("cmnd/" + this.groupRow?.name + "/Status");
     }
-
   }
 
 
@@ -105,7 +104,7 @@ export class ConsumptionMeterComponent implements OnInit {
     if (this.validateFields() && this.rangeDates) {
       //  this.rangeDates || !this.rangeDates[0] || !this.rangeDates[1]) {
       this.rootService.checkEnergyConsumption({
-        "groupcode": this.groupRow.fathercode,
+        "groupcode": this.groupRow?.fathercode || 0,
         "minDate": this.rangeDates[0].toISOString().replace("Z", ""),
         "maxDate": this.rangeDates[1].toISOString().replace("Z", "")
       })
@@ -161,7 +160,7 @@ export class ConsumptionMeterComponent implements OnInit {
   updateGraphic(registers: any[]) {
     if (this.graphicComponent) {
       this.setDimension(this.graphicComponent, registers);
-      this.graphicComponent.lineChartData.datasets[0].label = this.groupRow.name;
+      this.graphicComponent.lineChartData.datasets[0].label = this.groupRow.name || "CONSUMO GENERAL DEL EDIFICIO";
       this.graphicComponent.lineChartData.datasets[0].data
         = registers.reduce((acc: any[], r) => acc.concat(r.energyday?.toFixed(2)), []);
       this.graphicComponent.lineChartData.labels

@@ -3,11 +3,11 @@
     <span class="fa fa-times close" (click)="onCancel()"></span>
 </div>
 <div class="modal-body">
-    <div class="row px-1 py-2 card-header">
+    <div *ngIf="groupRow.fathercode" class="row px-1 py-2 card-header">
         <label class="col-sm-3 m-0 py-2">Nombre:</label>
         <input class="col-sm-9 m-0 py-2" [(ngModel)]="groupRow.name" type="text" maxlength="30" />
     </div>
-    <div *ngIf="groupRow.connect" class="row px-1 py-2 text-center">
+    <div *ngIf="groupRow.fathercode && groupRow.connect" class="row px-1 py-2 text-center">
         <label class="col-sm-4 m-0 py-1">Potencia</label>
         <label class="col-sm-4 m-0 py-1">Intensidad</label>
         <label class="col-sm-4 m-0 py-1">Voltaje</label>
@@ -15,11 +15,11 @@
         <label class="col-sm-4 m-0 py-1">{{intensity}}A</label>
         <label class="col-sm-4 m-0 py-1">{{voltage}}V</label>
     </div>
-    <div *ngIf="!groupRow.connect" class="row px-1 py-2 d-flex justify-content-around">
+    <div *ngIf="groupRow.fathercode && !groupRow.connect" class="row px-1 py-2 d-flex justify-content-around">
         DESCONECTADO
     </div>
     <label *ngIf="!existDates">NO EXISTEN REGISTROS PARA CONSULTAR</label>
-    <div *ngIf="groupRow.connect && existDates" class="row px-5 py-2">
+    <div *ngIf="existDates" class="row px-5 py-2">
         <label class="col-sm-12">Inserte rango de fechas:</label>
         <div class="col-sm-8">
             <p-calendar #calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true"
@@ -45,10 +45,11 @@
 <div class="modal-footer">
     <button type="button" class="btn btn-danger btn-sm" (click)="onCancel()">
         <span>
-            <em class="fa fa-close smx-button-text smx-button-icon-right"></em> Cancelar
+            <em class="fa fa-close smx-button-text smx-button-icon-right"></em>
+            {{groupRow.fathercode ? 'Cancelar' : 'Cerrar'}}
         </span>
     </button>
-    <button type="button" class="btn btn-success btn-sm " (click)="onConfirm(groupRow)">
+    <button *ngIf="groupRow.fathercode" type="button" class="btn btn-success btn-sm " (click)="onConfirm(groupRow)">
         <span>
             <em class="fa fa-save smx-button-text smx-button-icon-right"></em> Aceptar
         </span>

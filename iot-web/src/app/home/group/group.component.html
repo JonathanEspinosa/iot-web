@@ -24,7 +24,7 @@
 						</button>
 					</div>
 					<div class="col-sm-4 col-md-2">
-						<button *ngIf="powDevice" type="button" class="btn btn-outline-success btn-sm"
+						<button *ngIf="powDevice || !fathercode" type="button" class="btn btn-outline-success btn-sm"
 							(click)="consumption()">
 							<em class="fa fa-tachometer"></em> Medidor de consumo
 							<i class="fas fa-tachometer-alt"></i>
